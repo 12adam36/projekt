@@ -80,8 +80,12 @@ WSGI_APPLICATION = 'projekt_main.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('NAME_H'),
+        'USER': os.getenv('USER_H'),
+        'PASSWORD': os.getenv('PASSWORD_H'),
+        'HOST': os.getenv('IP_H'),
+        'PORT': os.getenv('PORT_H'),
 
     }
 }

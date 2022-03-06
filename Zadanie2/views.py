@@ -20,4 +20,4 @@ def index(request):
     data_version = cursor.fetchall()
     cursor.execute("SELECT pg_database_size('dota2')/1024/1024 as dota2_db_size;")
     data_size = cursor.fetchall()
-    return JsonResponse({"pgsql": {"version": data_version[0], "dota2_db_size": data_size[0]}})
+    return JsonResponse({'pgsql': {'version': data_version[0], 'dota2_db_size': data_size[0]}})

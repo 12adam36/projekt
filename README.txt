@@ -1,0 +1,1 @@
+https://fiit-dbs-xslaninka-app.herokuapp.com

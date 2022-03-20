@@ -69,7 +69,7 @@ order by m.id ASC;""", [input_player_id])
         match = {
             "match_id": line[2],
             "hero_localized_name": line[3],
-            "match_duration_minutes": line[4],
+            "match_duration_minutes": float(line[4]),
             "experiences_gained": line[5],
             "level_gained": line[6],
             "winner": line[7],

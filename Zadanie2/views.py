@@ -61,6 +61,7 @@ where p.id = %s
 order by m.id ASC;""", [input_player_id])
     data = cursor.fetchall()
     array = []
+    player_nick = ""
 
     for line in data:
         player_nick = line[1]
@@ -75,6 +76,6 @@ order by m.id ASC;""", [input_player_id])
         }
         array.append(match)
 
-    return JsonResponse({"id": input_player_id, "player_nick": player_nick_, "matches": array})
+    return JsonResponse({"id": input_player_id, "player_nick": player_nick, "matches": array})
 
 

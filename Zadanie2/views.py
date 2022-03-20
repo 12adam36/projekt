@@ -79,3 +79,67 @@ order by m.id ASC;""", [input_player_id])
     return JsonResponse({"id": input_player_id, "player_nick": player_nick, "matches": array})
 
 
+@api_view(['GET'])
+def game_objectives(request, input_player_id):
+    connection = psycopg2.connect(
+        dbname=os.getenv('NAME_DATABASE'),
+        user=os.getenv('AIS_USERNAME'),
+        password=os.getenv('PASSWORD'),
+        host=os.getenv('DBS_IP'),
+        port=os.getenv('DBS_PORT')
+    )
+
+    cursor = connection.cursor()
+    cursor.execute("""select p.id, coalesce(p.nick,'unknown'), h.localized_name, mpd.match_id, (select distinct coalesce(g_o.subtype,'NO_ACTION')),
+       coalesce(NULLIF(count(g_o.subtype),0),1)
+from matches_players_details as mpd
+join players as p on mpd.player_id = p.id
+join heroes as h on mpd.hero_id = h.id
+left outer join game_objectives as g_o on mpd.id = g_o.match_player_detail_id_1
+where p.id = 14944 group by p.id, mpd.match_id, h.localized_name, g_o.subtype, g_o.match_player_detail_id_1
+order by mpd.match_id ASC;""", [input_player_id])
+    data = cursor.fetchall()
+    array = []
+    pole = []
+    player_nick = ""
+    x = 0
+    for line in data:
+        player_nick = line[1]
+        array = []
+        m_id = line[3]
+        if x ==0 or (x!= 0 and data[x - 1][3] != m_id):
+            for line2 in data:
+                if line2[3] == m_id:
+                    action = {
+                        "hero_action": line2[4],
+                        "count": line[5],
+                    }
+                    array.append(action)
+            match = {
+                "match_id": line[3],
+                "hero_localized_name": line[2],
+                "actions": array,
+            }
+            pole.append(match)
+            x = x + 1
+
+
+
+    return JsonResponse({"id": input_player_id, "player_nick": player_nick, "matches": pole})
+
+
+@api_view(['GET'])
+def abilities(request, input_player_id):
+    connection = psycopg2.connect(
+        dbname=os.getenv('NAME_DATABASE'),
+        user=os.getenv('AIS_USERNAME'),
+        password=os.getenv('PASSWORD'),
+        host=os.getenv('DBS_IP'),
+        port=os.getenv('DBS_PORT')
+    )
+
+    cursor = connection.cursor()
+    cursor.execute("""""", [input_player_id])
+    data = cursor.fetchall()
+
+    #return JsonResponse({"id": input_player_id, "player_nick": player_nick, "matches": array})

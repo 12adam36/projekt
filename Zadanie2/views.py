@@ -107,12 +107,12 @@ order by mpd.match_id ASC;""", [input_player_id])
         player_nick = line[1]
         array = []
         m_id = line[3]
-        if x ==0 or (x!= 0 and data[x - 1][3] != m_id):
+        if x == 0 or (x != 0 and data[x - 1][3] != m_id):
             for line2 in data:
                 if line2[3] == m_id:
                     action = {
                         "hero_action": line2[4],
-                        "count": line[5],
+                        "count": line2[5],
                     }
                     array.append(action)
             match = {
@@ -122,8 +122,6 @@ order by mpd.match_id ASC;""", [input_player_id])
             }
             pole.append(match)
             x = x + 1
-
-
 
     return JsonResponse({"id": input_player_id, "player_nick": player_nick, "matches": pole})
 

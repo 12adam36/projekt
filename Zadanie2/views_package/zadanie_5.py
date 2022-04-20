@@ -4,20 +4,12 @@ import psycopg2
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
+from . import zadanie_2
 
 
 @api_view(['GET'])
 def top_purchases(request, input_match_id):
-    # connection = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-
-    cursor = connection.cursor()
+    cursor = zadanie_2.function_connection()
     cursor.execute("""""", [input_match_id])
     data = cursor.fetchall()
 
@@ -26,16 +18,7 @@ def top_purchases(request, input_match_id):
 
 @api_view(['GET'])
 def usage(request, input_ability_id):
-    # connection = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-
-    cursor = connection.cursor()
+    cursor = zadanie_2.function_connection()
     cursor.execute("""""", [input_ability_id])
     data = cursor.fetchall()
 
@@ -44,16 +27,7 @@ def usage(request, input_ability_id):
 
 @api_view(['GET'])
 def tower_kills(request):
-    # connection = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-
-    cursor = connection.cursor()
+    cursor = zadanie_2.function_connection()
     cursor.execute("""""")
     data = cursor.fetchall()
 

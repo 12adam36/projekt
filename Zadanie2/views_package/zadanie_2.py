@@ -21,15 +21,7 @@ def function_connection():
 
 @api_view(['GET'])
 def index(request):
-    # cursor = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-    cursor = connection.cursor()
+    cursor = function_connection()
     cursor.execute("SELECT VERSION()")
     data_version = cursor.fetchone()
     cursor.execute("SELECT pg_database_size('dota2')/1024/1024 as dota2_db_size;")

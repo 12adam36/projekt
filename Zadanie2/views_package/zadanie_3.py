@@ -4,35 +4,19 @@ import psycopg2
 from django.shortcuts import render
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
+from . import zadanie_2
 
 
 @api_view(['GET'])
 def patches(request):
-    # connection = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-    cursor = connection.cursor()
+    cursor = zadanie_2.function_connection()
     cursor.execute("select")
     return JsonResponse({"halo": 'halo'})
 
 
 @api_view(['GET'])
 def game_exp(request, input_player_id):
-    # connection = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-
-    cursor = connection.cursor()
+    cursor = zadanie_2.function_connection()
     cursor.execute("""select p.id, COALESCE(p.nick, 'unknown'), m.id, h.localized_name, ROUND((m.duration::decimal)/60, 2)  as duration, (coalesce(mpd.xp_hero,0)+coalesce(mpd.xp_creep,0)+coalesce(mpd.xp_other,0)+coalesce(mpd.xp_roshan,0)) as experiences_gained, mpd.level,
        case when(mpd.player_slot >= 0 and mpd.player_slot <= 4 and m.radiant_win = true) then true
            when (mpd.player_slot >= 128 and mpd.player_slot <= 132 and m.radiant_win = false) then true
@@ -66,16 +50,7 @@ order by m.id ASC;""", [input_player_id])
 
 @api_view(['GET'])
 def game_objectives(request, input_player_id):
-    # connection = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-
-    cursor = connection.cursor()
+    cursor = zadanie_2.function_connection()
     cursor.execute("""select p.id, coalesce(p.nick,'unknown'), h.localized_name, mpd.match_id, (select distinct coalesce(g_o.subtype,'NO_ACTION')),
        coalesce(NULLIF(count(g_o.subtype),0),1)
 from matches_players_details as mpd
@@ -114,16 +89,7 @@ order by mpd.match_id ASC;""", [input_player_id])
 
 @api_view(['GET'])
 def abilities(request, input_player_id):
-    # connection = function_connection()
-    connection = psycopg2.connect(
-        dbname=os.getenv('NAME_DATABASE'),
-        user=os.getenv('AIS_USERNAME'),
-        password=os.getenv('PASSWORD'),
-        host=os.getenv('DBS_IP'),
-        port=os.getenv('DBS_PORT')
-    )
-
-    cursor = connection.cursor()
+    cursor = zadanie_2.function_connection()
     cursor.execute("""""", [input_player_id])
     data = cursor.fetchall()
 

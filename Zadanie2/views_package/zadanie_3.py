@@ -57,11 +57,10 @@ from matches_players_details as mpd
 join players as p on mpd.player_id = p.id
 join heroes as h on mpd.hero_id = h.id
 left outer join game_objectives as g_o on mpd.id = g_o.match_player_detail_id_1
-where p.id = 14944 group by p.id, mpd.match_id, h.localized_name, g_o.subtype, g_o.match_player_detail_id_1
+where p.id = %s group by p.id, mpd.match_id, h.localized_name, g_o.subtype, g_o.match_player_detail_id_1
 order by mpd.match_id ASC;""", [input_player_id])
     data = cursor.fetchall()
-    array = []
-    pole = []
+    array_2 = []
     player_nick = ""
     x = 0
     for line in data:
@@ -81,10 +80,10 @@ order by mpd.match_id ASC;""", [input_player_id])
                 "hero_localized_name": line[2],
                 "actions": array,
             }
-            pole.append(match)
+            array_2.append(match)
         x = x + 1
 
-    return JsonResponse({"id": input_player_id, "player_nick": player_nick, "matches": pole})
+    return JsonResponse({"id": input_player_id, "player_nick": player_nick, "matches": array_2})
 
 
 @api_view(['GET'])
